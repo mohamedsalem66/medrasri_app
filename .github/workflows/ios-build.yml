@@ -1,64 +1,37 @@
-name: Build iOS IPA with Expo Build
+name: iOS CI
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch: # Allows manual triggering
-
-env:
-  EXPO_APPLE_TEAM_ID: "mohamedsidibrahim11@gmail.com"
-  EXPO_APPLE_ID: "J25B6JQ586"
+    branches: [ "main" ]
 
 jobs:
   build-ios:
-    runs-on: macos-latest # iOS builds require macOS
+    runs-on: macos-latest
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v3
 
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
-          cache: 'npm'
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          token: "u5L02V64PwlpHYEnZDPznC33xDHcbZqHsjhcUf_H"
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Configure Apple Credentials
+      - name: Install CocoaPods
         run: |
-          # This sets up your Apple credentials in Expo
-          npx expo build:ios --clear-credentials
-          echo "${{ secrets.APPLE_CREDENTIALS }}" | base64 --decode > credentials.json
-          npx expo build:ios -c --non-interactive
+          cd ios
+          pod install --repo-update
 
-      - name: Build iOS IPA
+      - name: Build IPA with Fastlane
         run: |
-          npx expo build:ios --non-interactive --type archive
-          # Wait for build to complete
-          npx expo build:status
+          cd ios
+          bundle install
+          bundle exec fastlane gym --scheme MyApp --export_method ad-hoc
 
-      - name: Download built IPA
-        run: |
-          npx expo build:status --non-interactive > build-status.json
-          IPA_URL=$(node -e "console.log(require('./build-status.json').artifacts.url)")
-          curl -o app.ipa $IPA_URL
-
-      - name: Upload IPA artifact
+      - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
-          name: app-ipa
-          path: app.ipa
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
-        with:
-          files: app.ipa
-          body: "Internal iOS build of the app"
+          name: ios-ipa
+          path: ios/MyApp.ipa
