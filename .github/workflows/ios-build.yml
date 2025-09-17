@@ -30,8 +30,8 @@ jobs:
       - name: Build IPA with Fastlane
         run: |
           cd ios
-          bundle install
-          bundle exec fastlane gym --scheme MyApp --export_method ad-hoc
+          fastlane gym --scheme MedrastiAppSTG --export_method ad-hoc
+      
 
       - name: Upload IPA artifact
         uses: actions/upload-artifact@v4
