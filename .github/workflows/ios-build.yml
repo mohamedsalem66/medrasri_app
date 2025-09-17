@@ -1,0 +1,64 @@
+name: Build iOS IPA with Expo Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # Allows manual triggering
+
+env:
+  EXPO_APPLE_TEAM_ID: "mohamedsidibrahim11@gmail.com"
+  EXPO_APPLE_ID: "J25B6JQ586"
+
+jobs:
+  build-ios:
+    runs-on: macos-latest # iOS builds require macOS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          expo-version: latest
+          token: "u5L02V64PwlpHYEnZDPznC33xDHcbZqHsjhcUf_H"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure Apple Credentials
+        run: |
+          # This sets up your Apple credentials in Expo
+          npx expo build:ios --clear-credentials
+          echo "${{ secrets.APPLE_CREDENTIALS }}" | base64 --decode > credentials.json
+          npx expo build:ios -c --non-interactive
+
+      - name: Build iOS IPA
+        run: |
+          npx expo build:ios --non-interactive --type archive
+          # Wait for build to complete
+          npx expo build:status
+
+      - name: Download built IPA
+        run: |
+          npx expo build:status --non-interactive > build-status.json
+          IPA_URL=$(node -e "console.log(require('./build-status.json').artifacts.url)")
+          curl -o app.ipa $IPA_URL
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-ipa
+          path: app.ipa
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: app.ipa
+          body: "Internal iOS build of the app"

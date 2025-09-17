@@ -1,0 +1,91 @@
+{
+  "cli": {
+    "version": ">= 0.47.0"
+  },
+  "build": {
+    "development": {
+      "channel": "development",
+      "env": {
+        "ENVIRONMENT": "development",
+        "MARSA_DRIVE": "https://api-staging.medrasti.com"
+      },
+      "android": {
+        "buildType": "apk",
+        "autoIncrement": "version",
+        "image": "latest"
+      },
+      "ios": {
+        "autoIncrement": "version",
+        "image": "latest"
+      }
+    },
+    "integration": {
+      "channel": "integration",
+      "env": {
+        "ENVIRONMENT": "integration",
+        "MARSA_DRIVE": "https://api-staging.medrasti.com"
+      },
+      "android": {
+        "buildType": "apk",
+        "autoIncrement": "version",
+        "image": "latest"
+      },
+      "ios": {
+        "autoIncrement": "version",
+        "image": "latest"
+      }
+    },
+    "staging": {
+      "distribution": "internal",
+      "channel": "staging",
+      "env": {
+        "ENVIRONMENT": "staging",
+        "MARSA_DRIVE": "https://api-staging.medrasti.com"
+      },
+      "android": {
+        "buildType": "apk",
+        "autoIncrement": "versionCode"
+      },
+      "ios": {
+        "autoIncrement": "version",
+        "image": "macos-sequoia-15.5-xcode-16.4"
+      }
+    },
+    "production": {
+      "channel": "production",
+      "cache": {
+        "disabled": true
+      },
+      "env": {
+        "ENVIRONMENT": "production",
+        "MARSA_DRIVE": "https://api-staging.medrasti.com"
+      },
+      "android": {
+        "autoIncrement": "versionCode"
+      },
+      "ios": {
+        "autoIncrement": "version"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "appleId": "mohamedsidibrahim11@gmail.com",
+        "appleTeamId": "J25B6JQ586",
+        "companyName": "DIGI WAVE-SARL",
+        "language": "en-US",
+        "sku": "medrasti-prod-014"
+      }
+    },
+    "staging": {
+      "ios": {
+        "appleId": "mohamedsidibrahim11@gmail.com",
+        "appleTeamId": "J25B6JQ586",
+        "companyName": "DIGI WAVE-SARL",
+        "language": "en-US",
+        "sku": "medrasti-prod-014"
+      }
+    }
+  }
+}

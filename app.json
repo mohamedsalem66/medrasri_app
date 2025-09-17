@@ -1,0 +1,98 @@
+{
+  "expo": {
+    "name": "Medrasti App",
+    "slug": "medrasti-app",
+    "version": "0.0.11",
+    "orientation": "portrait",
+    "jsEngine": "hermes",
+    "icon": "./assets/icons/school.png",
+    "scheme": "medrasti-app",
+    "userInterfaceStyle": "automatic",
+    "updates": {
+      "url": "https://u.expo.dev/2bb20f9b-cf94-43e0-b1f8-f71fc164817c"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e09a2096-53e0-4cf4-bb0e-218076521438"
+      }
+    },
+    "splash": {
+      "image": "./assets/images/logo-splash-restaurant.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "$(PRODUCT_NAME) requires access to the camera because the user can take photos of his profile picture",
+        "NSLocationWhenInUseUsageDescription": "The $(PRODUCT_NAME) app requires geolocation to improve quality and send you the nearest orders",
+        "NSLocationAlwaysUsageDescription": "The $(PRODUCT_NAME) app requires geolocation to improve quality and send you the nearest orders",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "The $(PRODUCT_NAME) app requires geolocation to improve quality and send you the nearest orders",
+        "UIBackgroundModes": [
+          "remote-notification"
+        ],
+        "ITSAppUsesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.medrasti.admin",
+      "buildNumber": "0.0.1"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo-splash.png",
+        "backgroundColor": "#FFFFFF"
+      },
+      "permissions": [
+        "VIBRATE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "SYSTEM_ALERT_WINDOW",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ],
+      "package": "com.medrasti",
+      "versionCode": 1
+    },
+    "web": {
+      "favicon": "./assets/images/.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
+          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      "expo-updates",
+      "expo-secure-store",
+      "expo-router",
+      "expo-localization",
+      "./android-material.plugins",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 35,
+            "targetSdkVersion": 35,
+            "buildToolsVersion": "35.0.0",
+            "newArchEnabled": true
+          },
+          "ios": {
+            "useFrameworks": "static",
+            "deploymentTarget": "15.1",
+            "newArchEnabled": true
+          }
+        }
+      ]
+    ]
+  }
+}
